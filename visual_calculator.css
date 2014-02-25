@@ -1,0 +1,28 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "HelveticaNeue-Ultralight";
+  box-sizing: border-box;
+}
+div#board {
+  width: 100%;
+  min-height: 1000px;
+  max-height: 100%;
+  overflow: hidden;
+  padding: 20px 30px;
+}
+
+div.node {
+  display: inline-block;
+  color: black;
+  height: 30px;
+  font-size: 20px;
+  line-height: 30px;
+  padding: 0px 12px;
+  border-radius: 15px;
+  outline: none;
+}
+
+div.node:focus {
+  background: yellow;
+}
