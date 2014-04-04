@@ -1,3 +1,23 @@
+// x ^ (2+x) + 2 * x = y
+// function y(x) {
+//   Math.pow(x, 2 + x) + 2 * x
+// }
+
+// f(x) = ((3 + x) ^ (2 + x)) ^ (x ^ 2 + 3x - 1)
+// function (x) {
+//   return Math.pow(
+//     Math.pow(3 + x, 2 + x),
+//     Math.pow(x, 2) + 3 * x - 1
+//   );
+// }
+var Tokenizer = function Tokenizer(string) {
+  
+}
+
+var Evaluator = function Evaluator(string) {
+  // body...
+}
+
 function start() {
   var board = document.querySelector("div#board");
   function addEquation(event) {
@@ -42,24 +62,46 @@ function start() {
   }
   
   function unicodeToString(unicode_string) {
-    return String.fromCharCode(
-      eval("0x" + unicode_string.slice(2, 6))
-    );
+    if (unicode_string.indexOf("U+") > -1) {
+      return String.fromCharCode(
+        eval("0x" + unicode_string.slice(2, 6))
+      );
+    } else {
+      return "FUNC_KEY";
+    }
   }
   
   function pressKey(event) {
     var keycode = unicodeToString(event.keyIdentifier);
+    console.log(keycode);
     if (event.srcElement.className == "node") {
-      var OPERATOR = ["=", "*", "+", "-", "/", "(", ")"];
+      var OPERATOR = ["*", "+", "-", "/", "(", ")"];
+      var EQUAL = ["="];
       if (OPERATOR.indexOf(keycode) > -1) {
         var operator_node = document.createElement("div");
         operator_node.contentEditable = true;
         operator_node.textContent = keycode;
         operator_node.classList.add("node");
+        operator_node.classList.add("operator");
         event.srcElement.parentElement.appendChild(operator_node);
         var content_node = document.createElement("div");
         content_node.contentEditable = true;
         content_node.textContent = "";
+        content_node.classList.add("node");
+        event.srcElement.parentElement.appendChild(content_node);
+        content_node.focus();
+        return event.preventDefault();
+      } else if (keycode == EQUAL) {
+        var equation = event.srcElement.parentElement.textContent;
+        var operator_node = document.createElement("div");
+        operator_node.contentEditable = true;
+        operator_node.textContent = keycode;
+        operator_node.classList.add("node", "equal");
+        operator_node.classList.add("operator");
+        event.srcElement.parentElement.appendChild(operator_node);
+        var content_node = document.createElement("div");
+        content_node.contentEditable = true;
+        content_node.textContent = eval(equation);
         content_node.classList.add("node");
         event.srcElement.parentElement.appendChild(content_node);
         content_node.focus();

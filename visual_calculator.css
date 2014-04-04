@@ -12,6 +12,15 @@ div#board {
   padding: 20px 30px;
 }
 
+div.equation {
+  border-radius: 8px;
+  padding: 10px;
+}
+
+div.equation:hover,  div.equation.movable{
+  background: #f9f9f9;
+}
+
 div.node {
   display: inline-block;
   color: black;
