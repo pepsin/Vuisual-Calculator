@@ -3,20 +3,20 @@ var BASIC_OPERATORS = ["+", "-", "×", "÷", "(", ")", "*", "/", "=", ","],
     LITERALS = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "_"];
     NUMBER = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
 
-
-var GLOBAL_FUNCTIONS = {
-
+var TYPE = {
+  IDENTIFER: "IDENTIFER",
+  NUMBER: "NUMBER",
+  ARITHMETIC: "ARITHMETIC",
+  PARENTHESIS: "PARENTHESIS"
 };
 
-var GLOBAL_VARIABLES = {
-};
 
 function isEqualSign(atom) {
   return atom == "=";
 }
 
-function isFrontCurlyBracket(atom) {
-  return atom == "(";
+function isParenthesis(atom) {
+  return atom == "(" || atom == ")";
 }
 
 function isBasicOperator(atom) {
@@ -53,17 +53,31 @@ function Tokenize(string) {
   }
   
   while (current <= string.length) {
-    var atom = currentAtom(), prev = previous();
+    var atom = currentAtom(), prev = previous(), type;
     
     if (isBasicOperator(atom)) {
       if (!isBasicOperator(token)) {
         prevIsNumber = false;
-        token_arr.push(token);
+        token_arr.push({
+          type: TYPE.IDENTIFER,
+          token: token
+        });
       }
       token = atom;
-      token_arr.push(token);
+      if (isParenthesis(atom)) {
+        token_arr.push({
+          type: TYPE.PARENTHESIS,
+          token: token
+        });
+      } else {
+        token_arr.push({
+          type: TYPE.ARITHMETIC,
+          token: token
+        });
+      }
     } else if (isLiterals(atom)){
       if (isLiterals(prev)) {
+        type = TYPE.IDENTIFER;
         token += atom;
       } else {
         token = atom;
@@ -74,13 +88,18 @@ function Tokenize(string) {
         token = atom;
       //Need to throw an error here when there's multiple "0", like 00.2 is illegal
       } else if (isNumber(prev) && prevIsNumber) {
+        type = TYPE.NUMBER;
         token += atom;
       }
     }
     current += 1;
   }
-  token_arr.push(token);
+  token_arr.push({
+    type: type,
+    token: token
+  });
   return token_arr;
 }
 
 var tokens = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301");
+console.log(tokens);
