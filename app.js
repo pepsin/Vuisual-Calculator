@@ -86,21 +86,6 @@ function Tokenize(string) {
   });
   return token_arr;
 }
-
-var tokens = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301");
-var tokens2 = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301 / 31 + ((((((30))))))");
-console.log(tokens);
-console.log(tokens2);
-var tokens = ["(","x", "+", "1", ")", "+", "(", "POW", "(", "x", ",", "000.1", ")", "+", "x", ")", "*", "30.2", "+", "301" ];
-var another_tokens = ["x", "+", "(", "POW", "(", "x", ",", "000.1", ")", "+", "x", ")", "*", "30.2", "+", "301" ];
-var tokens2 = ["POW", "(", "x", ",", "000.1", ")", "+", "x", "*", "30.2", "+", "301" ];
-
-IDENTIFER = 0;
-ARITHMETIC = 1;
-NUMBER = 2;
-BUILDIN_FUNCTION = 3;
-USER_FUNCTION = 4;
-
 function Parse(tokens) {
   if (tokens.length < 2) {
     return tokens[0];
@@ -176,6 +161,10 @@ function FindCloseParenthesisPosition(tokens) {
   }
   return position;
 }
+var tokens = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301");
+var tokens2 = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301 / 31 + ((((((30))))))");
+console.log(tokens);
+console.log(tokens2);
 
 x = Parse(tokens);
 y = Parse(another_tokens);

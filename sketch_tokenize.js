@@ -85,8 +85,3 @@ function Tokenize(string) {
   });
   return token_arr;
 }
-
-var tokens = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301");
-var tokens2 = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301 / 31 + ((((((30))))))");
-console.log(tokens);
-console.log(tokens2);

@@ -1,13 +1,3 @@
-var tokens = ["(","x", "+", "1", ")", "+", "(", "POW", "(", "x", ",", "000.1", ")", "+", "x", ")", "*", "30.2", "+", "301" ];
-var another_tokens = ["x", "+", "(", "POW", "(", "x", ",", "000.1", ")", "+", "x", ")", "*", "30.2", "+", "301" ];
-var tokens2 = ["POW", "(", "x", ",", "000.1", ")", "+", "x", "*", "30.2", "+", "301" ];
-
-IDENTIFER = 0;
-ARITHMETIC = 1;
-NUMBER = 2;
-BUILDIN_FUNCTION = 3;
-USER_FUNCTION = 4;
-
 function Parse(tokens) {
   if (tokens.length < 2) {
     return tokens[0];
@@ -83,11 +73,3 @@ function FindCloseParenthesisPosition(tokens) {
   }
   return position;
 }
-
-x = Parse(tokens);
-y = Parse(another_tokens);
-z = Parse(tokens2);
-console.log("-----------------------------------分隔----------------------------------------")
-console.log(x);
-console.log(y);
-console.log(z);
