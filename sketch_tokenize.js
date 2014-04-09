@@ -6,20 +6,10 @@ var BASIC_OPERATORS = ["+", "-", "×", "÷", "(", ")", "*", "/", "=", ","],
 var TYPE = {
   IDENTIFER: "IDENTIFER",
   NUMBER: "NUMBER",
-  ARITHMETIC: "ARITHMETIC",
-  PARENTHESIS: "PARENTHESIS"
+  OPERATOR: "OPERATOR"
 };
 
-
-function isEqualSign(atom) {
-  return atom == "=";
-}
-
-function isParenthesis(atom) {
-  return atom == "(" || atom == ")";
-}
-
-function isBasicOperator(atom) {
+function isOperator(atom) {
   return BASIC_OPERATORS.indexOf(atom) != -1;
 }
 
@@ -55,8 +45,8 @@ function Tokenize(string) {
   while (current <= string.length) {
     var atom = currentAtom(), prev = previous(), type;
     
-    if (isBasicOperator(atom)) {
-      if (!isBasicOperator(token)) {
+    if (isOperator(atom)) {
+      if (!isOperator(token)) {
         prevIsNumber = false;
         token_arr.push({
           type: TYPE.IDENTIFER,
@@ -64,17 +54,10 @@ function Tokenize(string) {
         });
       }
       token = atom;
-      if (isParenthesis(atom)) {
-        token_arr.push({
-          type: TYPE.PARENTHESIS,
-          token: token
-        });
-      } else {
-        token_arr.push({
-          type: TYPE.ARITHMETIC,
-          token: token
-        });
-      }
+      token_arr.push({
+        type: TYPE.OPERATOR,
+        token: token
+      });
     } else if (isLiterals(atom)){
       if (isLiterals(prev)) {
         type = TYPE.IDENTIFER;
@@ -83,9 +66,10 @@ function Tokenize(string) {
         token = atom;
       }
     } else if (isNumber(atom)) {
-      if (isBasicOperator(prev) || prev == undefined) {
+      if (isOperator(prev) || prev == undefined) {
         prevIsNumber = true;
         token = atom;
+        type = TYPE.NUMBER;
       //Need to throw an error here when there's multiple "0", like 00.2 is illegal
       } else if (isNumber(prev) && prevIsNumber) {
         type = TYPE.NUMBER;
@@ -94,6 +78,7 @@ function Tokenize(string) {
     }
     current += 1;
   }
+  console.log(token);
   token_arr.push({
     type: type,
     token: token
@@ -102,4 +87,6 @@ function Tokenize(string) {
 }
 
 var tokens = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301");
+var tokens2 = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301 / 31 + ((((((30))))))");
 console.log(tokens);
+console.log(tokens2);

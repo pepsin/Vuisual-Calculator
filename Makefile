@@ -1,0 +1,2 @@
+build: 
+	@ruby jsmerge.rb
