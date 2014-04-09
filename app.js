@@ -1,5 +1,7 @@
 
 function print(object) {
+  console.log("--------------------------------------------");
+  console.log(object);
   console.log(JSON.stringify(object).replace(/\},/g, "},\n"));
 }
 function Tokenize(string) {
@@ -109,12 +111,13 @@ function FindCloseParenthesisPosition(tokens) {
   }
   return position;
 }
-//var tokens = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301");
+var tokens = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301");
 var tokens2 = Tokenize("aFunction(x, y, z) = x + (POW(x, 20.1) + x) * 30.2 + 301 / 31 + ((((((30))))))");
 //console.log(tokens);
 print(tokens2);
 
-//x = Parse(tokens);
+x = Parse(tokens);
+print(x);
 //y = Parse(another_tokens);
 //z = Parse(tokens2);
 //console.log("-----------------------------------分隔----------------------------------------");
