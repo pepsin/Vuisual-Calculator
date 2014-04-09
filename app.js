@@ -2,106 +2,37 @@
 function print(object) {
   console.log(JSON.stringify(object).replace(/\},/g, "},\n"));
 }
-var BASIC_OPERATORS = ["+", "-", "×", "÷", "(", ")", "*", "/", "=", ","],
-    ADVANCE_OPERATORS = ["POW", "SQRT"],
-    LITERALS = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "_"];
-    NUMBER = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
-
-var TYPE = {
-  IDENTIFER: "IDENTIFER",
-  NUMBER: "NUMBER",
-  OPERATOR: "OPERATOR"
-};
-
-function isOperator(atom) {
-  return BASIC_OPERATORS.indexOf(atom) != -1;
-}
-
 function Tokenize(string) {
-  console.log("FUNCTION IS", string);
-  string = string.replace(/\s/g, "");
-  var arr = [],
-      token = "";
-  for (var i = 0; i < string.length; i++) {
-    if (isOperator(string[i])) {
-      if (!isOperator(token)) {
-        arr.push({
-          type: TYPE.IDENTIFER,
-          token: token
-        });
+  var OPERATORS, TYPE, IsOperator, IsNotOperator, STRING, result, token;
+  
+  OPERATORS = ["+", "-", "×", "÷", "(", ")", "*", "/", "=", ","];
+
+  TYPE = { IDENTIFER: "IDENTIFER", OPERATOR: "OPERATOR" };
+
+  IsOperator = function(atom) {
+    return OPERATORS.indexOf(atom) != -1;
+  }
+  
+  IsNotOperator = function(atom) {
+    return !IsOperator(atom);
+  }
+
+  STRING = string.replace(/\s/g, "");
+  result = [];
+  token = "";
+  
+  for (var i = 0; i < STRING.length; i++) {
+    if (IsOperator(STRING[i])) {
+      if (IsNotOperator(token)) {
+        result.push({ type: TYPE.IDENTIFER, token: token });
       }
-      token = string[i];
-      arr.push({
-        type: TYPE.OPERATOR,
-        token: token
-      });
+      token = STRING[i];
+      result.push({ type: TYPE.OPERATOR, token: token });
     } else {
-      if (isOperator(token)) {
-        token = string[i];
-      } else {
-        token += string[i];
-      }
+      token = IsOperator(token) ? STRING[i] : token + STRING[i];
     }
   }
-  return arr;
-  //
-  //var current = 0,
-  //    token,
-  //    token_arr = [],
-  //    prevIsNumber = false;
-  //
-  //function peek() {
-  //  return string[current + 1];
-  //}
-  //
-  //function previous() {
-  //  return string[current - 1];
-  //}
-  //
-  //function currentAtom() {
-  //  return string[current];
-  //}
-  //
-  //while (current <= string.length) {
-  //  var atom = currentAtom(), prev = previous(), type;
-  //  
-  //  if (isOperator(atom)) {
-  //    if (!isOperator(token)) {
-  //      prevIsNumber = false;
-  //      token_arr.push({
-  //        type: TYPE.IDENTIFER,
-  //        token: token
-  //      });
-  //    }
-  //    token = atom;
-  //    token_arr.push({
-  //      type: TYPE.OPERATOR,
-  //      token: token
-  //    });
-  //  } else if (isLiterals(atom)){
-  //    if (isLiterals(prev)) {
-  //      type = TYPE.IDENTIFER;
-  //      token += atom;
-  //    } else {
-  //      token = atom;
-  //    }
-  //  } else if (isNumber(atom)) {
-  //    if (isOperator(prev) || prev == undefined) {
-  //      prevIsNumber = true;
-  //      token = atom;
-  //    //Need to throw an error here when there's multiple "0", like 00.2 is illegal
-  //    } else if (isNumber(prev) && prevIsNumber) {
-  //      type = TYPE.NUMBER;
-  //      token += atom;
-  //    }
-  //  }
-  //  current += 1;
-  //}
-  //token_arr.push({
-  //  type: type,
-  //  token: token
-  //});
-  //return token_arr;
+  return result;
 }
 function Parse(tokens) {
   if (tokens.length < 2) {
