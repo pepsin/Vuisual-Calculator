@@ -19,7 +19,7 @@ function Tokenize(string) {
   
   for (var i = 0; i < STRING.length; i++) {
     if (IsOperator(STRING[i])) {
-      if (IsNotOperator(token)) {
+      if (IsNotOperator(token) && token != "") {
         result.push({ type: TYPE.IDENTIFER, token: token });
       }
       token = STRING[i];
@@ -27,6 +27,11 @@ function Tokenize(string) {
     } else {
       token = IsOperator(token) ? STRING[i] : token + STRING[i];
     }
+  }
+  if (IsNotOperator(token) && token != "") {
+    result.push({ type: TYPE.IDENTIFER, token: token });
+  } else {
+    result.push({ type: TYPE.OPERATOR, token: token });
   }
   return result;
 }

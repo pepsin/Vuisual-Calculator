@@ -1,5 +1,6 @@
 function print(object) {
   console.log("--------------------------------------------");
   console.log(object);
-  console.log(JSON.stringify(object).replace(/\},/g, "},\n"));
+  var x = JSON.stringify(object, null, 4);
+  console.log(x);
 }
