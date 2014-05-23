@@ -2,6 +2,13 @@ function Tokenize(string) {
   var OPERATORS, TYPE, IsOperator, IsNotOperator, STRING, result, token;
   
   OPERATORS = ["+", "-", "×", "÷", "(", ")", "*", "/", "=", ","];
+  
+  OPERATORS_WEIGHT = {
+    "+": 1,
+    "-": 1,
+    "*": 2,
+    "/": 2,
+  }
 
   TYPE = { IDENTIFER: "IDENTIFER", OPERATOR: "OPERATOR" };
 
